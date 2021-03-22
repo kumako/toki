@@ -1,0 +1,28 @@
+name: Deploy Docker Image
+
+on: push
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    name: Build Docker
+    steps:      
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+      - name: Run tests
+        run: |
+          cd api
+          go test
+      - name: Package assets
+        run: |
+          export PATH=${PATH}:`go env GOPATH`/bin
+          go get github.com/markbates/pkger/cmd/pkger
+          pkger
+      - name: Build Docker image
+        run: |
+          docker build . -t docker.pkg.github.com/kumako/toki/toki:latest
+          docker tag docker.pkg.github.com/kumako/toki/toki:latest docker.pkg.github.com/kumako/toki/toki:${GITHUB_REF##*/}
+      - name: Push image to GitHub Packages
+        run: |
+           echo '${{ secrets.GITHUB_TOKEN }}' | docker login docker.pkg.github.com --username ${{ github.actor }} --password-stdin
+           docker push docker.pkg.github.com/kumako/toki/toki

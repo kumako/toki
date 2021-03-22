@@ -1,0 +1,17 @@
+.DS_Store
+.AppleDouble
+.LSOverride
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.zip
+*.gz
+*.dat
+toki
+
+node_modules

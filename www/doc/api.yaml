@@ -1,0 +1,33 @@
+openapi: "3.0.0"
+
+info:
+  version: 1.0.0
+  title: Toki API
+
+paths:
+  /api/timezone:
+    get:
+      summary: Retrieve remote Timezone
+      operationId: getTimezone
+      tags:
+        - Timezone
+      responses:
+        '200':
+          description: Timezone
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Timezone"
+        '404':
+          description: Path not found
+        '500':
+          description: Server Error
+components:
+  schemas:
+    Timezone:
+      type: object
+      required:
+        - timezone
+      properties:
+        timezone:
+          type: string
